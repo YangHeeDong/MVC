@@ -27,6 +27,7 @@ public class Container {
         scanControllers();
 
         // 레고 조립을 안해도 돌아가긴해
+
     }
 
     private static void scanRepositories(){
