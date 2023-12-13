@@ -1,5 +1,6 @@
 package com.ll.base.rq;
 
+import com.ll.boundedContext.article.Article;
 import com.ll.framwork.RouteInfo;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class Rq {
     private final HttpServletRequest req;
@@ -129,4 +131,23 @@ public class Rq {
         print(str + "\n");
     }
 
+    public void historyBack(String msg) {
+        if (msg != null && msg.trim().length() > 0) {
+            println("""
+                    <script>
+                    alert("%s");
+                    </script>
+                    """.formatted(msg));
+        }
+
+        println("""
+                <script>
+                history.back();
+                </script>
+                """);
+    }
+
+    public void setAttr(String name,Object value) {
+        req.setAttribute(name,value);
+    }
 }

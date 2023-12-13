@@ -1,13 +1,16 @@
 package com.ll.framwork;
 
 import com.ll.App;
+import com.ll.framwork.annotataion.Autowired;
 import com.ll.framwork.annotataion.Controller;
 import com.ll.framwork.annotataion.Repository;
 import com.ll.framwork.annotataion.Service;
+import com.ll.myMap.MyMap;
 import com.ll.util.Ut;
 
 import org.reflections.Reflections;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +19,7 @@ public class Container {
 
     static{
         objects = new HashMap<>();
+
         scanComponents();
     }
 
@@ -25,9 +29,46 @@ public class Container {
         scanRepositories();
         scanServices();
         scanControllers();
+        scanCustom();
 
-        // 레고 조립을 안해도 돌아가긴해
+        // 레고 조립
+        resolveDependenciesAllComponents();
 
+    }
+
+    private static void resolveDependenciesAllComponents() {
+        for (Class cls : objects.keySet()) {
+            Object o = objects.get(cls);
+
+            resolveDependencies(o);
+        }
+    }
+
+    // 여기 해설 필요해요
+    // 아래 메서드 없이 돌렸다가 autowired가 안되는 문제가 생겼는데
+    // 아래 그림에서 뭘 해주는것 같아요
+    private static void resolveDependencies(Object o) {
+        Arrays.asList(o.getClass().getDeclaredFields())
+                .stream()
+                .filter(f -> f.isAnnotationPresent(Autowired.class))
+                .map(field -> {
+                    field.setAccessible(true);
+                    return field;
+                })
+                .forEach(field -> {
+                    Class cls = field.getType();
+                    Object dependency = objects.get(cls);
+
+                    try {
+                        field.set(o, dependency);
+                    } catch (IllegalAccessException e) {
+
+                    }
+                });
+    }
+
+    private static void scanCustom() {
+        objects.put(MyMap.class, new MyMap(App.DB_HOST, App.DB_PORT, App.DB_NAME, App.DB_ID, App.DB_PASSWORD));
     }
 
     private static void scanRepositories(){

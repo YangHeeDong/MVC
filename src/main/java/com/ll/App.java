@@ -6,6 +6,6 @@ public class App {
     public static int DB_PORT = 3306;
     public static String DB_ID = "root";
     public static String DB_PASSWORD = "";
-    public static String DB_NAME = "mvc__dev";
+    public static String DB_NAME = "DB_MVC";
     public static boolean isProd = false;
 }

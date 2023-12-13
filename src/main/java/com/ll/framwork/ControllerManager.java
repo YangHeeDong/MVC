@@ -3,6 +3,7 @@ package com.ll.framwork;
 import com.ll.App;
 import com.ll.framwork.annotataion.*;
 import com.ll.base.rq.Rq;
+import com.ll.myMap.MyMap;
 import com.ll.util.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -93,7 +94,7 @@ public class ControllerManager {
         RouteInfo routeInfo = rq.getRouteInfo();
         Class controllerCls = routeInfo.getControllerCls();
         Method actionMethod = routeInfo.getMethod();
-
+        // 일단 여기서 controllerObj가 null
         Object controllerObj = Container.getObj(controllerCls);
 
         try {
@@ -101,15 +102,15 @@ public class ControllerManager {
             // 왜하는거지
             actionMethod.invoke(controllerObj, rq);
         } catch (IllegalAccessException e) {
-            rq.println("액션시작에 실패하였습니다.");
+            rq.println("IllegalAccessException 액션시작에 실패하였습니다.");
         } catch (InvocationTargetException e) {
+            rq.println("InvocationTargetException 액션시작에 실패하였습니다.");
             throw new RuntimeException(e);
-            //rq.println("액션시작에 실패하였습니다.");
         } finally {
             // 에러가 나든 안나든 뭘 실행하는거지
 
-            // MyMap myMap = Container.getObj(MyMap.class);
-            // myMap.closeConnection(); // 현재 쓰레드에 할당된 커넥션을 닫는다.
+             MyMap myMap = Container.getObj(MyMap.class);
+             myMap.closeConnection(); // 현재 쓰레드에 할당된 커넥션을 닫는다.
 
             // 안하면 벌어지는 일
             // 매 요청마다, DB 요청이 쌓인다.
