@@ -55,12 +55,12 @@ public class ControllerManager {
 
                 // 여기도 왜 matchCount가 고정?
                 if (path != null && httpMethod != null) {
-                    // String actionPath = Ut.str.beforeFrom(path, "/", 4);
+                    String actionPath = Ut.str.beforeFrom(path, "/", 3);
                     // String actionPath = Ut.str.beforeFrom(path, "/");
-                    String actionPath = path;
+                    //String actionPath = path;
 
-                    // String key = httpMethod + "___" + actionPath;
-                    String key = httpMethod + "___" + path;
+                    String key = httpMethod + "___" + actionPath;
+                    //String key = httpMethod + "___" + path;
 
                     routeInfos.put(key, new RouteInfo(path, actionPath, controllerCls, method));
                 }
@@ -80,7 +80,7 @@ public class ControllerManager {
         boolean contains = routeInfos.containsKey(mappingKey);
 
         if (contains == false) {
-//            rq.println("해당 요청은 존재하지 않습니다.");
+            rq.println("해당 요청은 존재하지 않습니다.");
             return;
         }
 
@@ -107,8 +107,7 @@ public class ControllerManager {
             rq.println("InvocationTargetException 액션시작에 실패하였습니다.");
             throw new RuntimeException(e);
         } finally {
-            // 에러가 나든 안나든 뭘 실행하는거지
-
+            // try문 후에 실행
              MyMap myMap = Container.getObj(MyMap.class);
              myMap.closeConnection(); // 현재 쓰레드에 할당된 커넥션을 닫는다.
 

@@ -53,7 +53,34 @@ public class ArticleController {
         long id = articleService.write(title,body,isBlind);
 
         // 등록후 상세 내용
-        // rq.replace("/usr/article/detail/%d".formatted(id), "%d번 게시물이 생성 되었습니다.".formatted(id));
+        rq.replace("/article/detail/%d".formatted(id), "%d번 게시물이 생성 되었습니다.".formatted(id));
+    }
+
+    @GetMapping("/article/detail/{id}")
+    public void showDetail(Rq rq){
+        long id = rq.getLongParam("id",0);
+
+        if(id == 0){
+            rq.historyBack("번호를 입력해 주세요");
+            return;
+        }
+
+        Article article = articleService.getById(id);
+
+        if(article == null){
+            rq.historyBack("해당 글이 존재하지 않습니다.");
+            return;
+        }
+
+        Article preArticle = articleService.getPreArticle(article.getId());
+        Article nextArticle = articleService.getNextArticle(article.getId());
+
+        rq.setAttr("prevArticle", preArticle);
+        rq.setAttr("nextArticle", nextArticle);
+        rq.setAttr("article",article);
+
+        rq.view("article/detail");
+
     }
 
 }

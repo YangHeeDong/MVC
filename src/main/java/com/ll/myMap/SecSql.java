@@ -177,7 +177,6 @@ public class SecSql {
                 }else{
                     rows.add(om.convertValue(row,cls));
                 }
-                System.out.println("넘어감");
             }
         }catch (SQLException e){
             connectionPool.closeConnection();
@@ -204,5 +203,19 @@ public class SecSql {
 
         return rows;
 
+    }
+
+    public <T> T selectRow() {
+        return (T) selectRow(Map.class);
+    }
+
+    public <T> T selectRow(Class<T> cls) {
+        List<T> rows = selectRows(cls);
+
+        if (rows.size() == 0) {
+            return null;
+        }
+
+        return rows.get(0);
     }
 }

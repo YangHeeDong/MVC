@@ -18,4 +18,16 @@ public class ArticleService {
     public List<Article> getArticles() {
         return articleRepository.getArticles();
     }
+
+    public Article getById(long id) {
+        return articleRepository.getById(id);
+    }
+
+    public Article getPreArticle(long id) {
+        return articleRepository.getPreArticle(id);
+    }
+
+    public Article getNextArticle(long id) {
+        return articleRepository.getNextArticle(id);
+    }
 }

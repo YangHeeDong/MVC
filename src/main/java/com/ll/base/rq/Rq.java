@@ -45,28 +45,9 @@ public class Rq {
     }
 
     public String getActionPath() {
-        // URI /로 자를때 길이에 따라 error
-        // 이걸 왜 하는 거지?
-        // String[] bits = req.getRequestURI().split("/");
+        String[] bits = req.getRequestURI().split("/");
 
-        // return "/%s/%s/%s".formatted(bits[1], bits[2], bits[3]);
-
-        return req.getRequestURI();
-    }
-
-    public String getParam(String paramName, String defaultValue) {
-        String value = req.getParameter(paramName);
-
-        // 여기의 의미가 뭘까
-        if (value == null) {
-            value = getPathParam(paramName, null);
-        }
-
-        if (value == null || value.trim().length() == 0) {
-            return defaultValue;
-        }
-
-        return value;
+        return "/%s/%s".formatted(bits[1], bits[2]);
     }
 
     public String getPathParam(String paramName, String defaultValue) {
@@ -84,7 +65,7 @@ public class Rq {
             String pathBit = pathBits[i];
 
             if (pathBit.equals("{" + paramName + "}")) {
-                index = i - 4;
+                index = i - 3;
                 break;
             }
         }
@@ -100,7 +81,7 @@ public class Rq {
         String[] bits = req.getRequestURI().split("/");
 
         try {
-            return bits[4 + index];
+            return bits[3 + index];
         } catch (ArrayIndexOutOfBoundsException e) {
             return defaultValue;
         }
@@ -150,4 +131,50 @@ public class Rq {
     public void setAttr(String name,Object value) {
         req.setAttribute(name,value);
     }
+
+    public void replace(String uri, String msg) {
+        if(msg != null && msg.trim().length() != 0){
+            println("""
+                    <script>
+                    alert("%s");
+                    </script>
+                    """.formatted(msg));
+        }
+
+        println("""
+                    <script>
+                        location.replace("%s");
+                    </script>
+                    """.formatted(uri));
+
+    }
+
+    public String getParam(String paramName, String defaultValue) {
+        String value = req.getParameter(paramName);
+
+        if (value == null) {
+            value = getPathParam(paramName, null);
+        }
+
+        if (value == null || value.trim().length() == 0) {
+            return defaultValue;
+        }
+
+        return value;
+    }
+
+    public long getLongParam(String paramName, long defaultValue) {
+        String value = getParam(paramName,null);
+
+        if(value == null){
+            return defaultValue;
+        }
+
+        try{
+            return Long.parseLong(value);
+        }catch (NumberFormatException e){
+            return defaultValue;
+        }
+    }
+
 }

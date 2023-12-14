@@ -35,7 +35,8 @@ public class Container {
         resolveDependenciesAllComponents();
 
     }
-
+    
+    // 아래 두 메서드 강의 들어보기
     private static void resolveDependenciesAllComponents() {
         for (Class cls : objects.keySet()) {
             Object o = objects.get(cls);
@@ -43,10 +44,7 @@ public class Container {
             resolveDependencies(o);
         }
     }
-
-    // 여기 해설 필요해요
-    // 아래 메서드 없이 돌렸다가 autowired가 안되는 문제가 생겼는데
-    // 아래 그림에서 뭘 해주는것 같아요
+    
     private static void resolveDependencies(Object o) {
         Arrays.asList(o.getClass().getDeclaredFields())
                 .stream()
