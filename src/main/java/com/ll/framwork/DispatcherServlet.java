@@ -5,7 +5,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/*")
+// @WebServlet("/article/*")
+@WebServlet(urlPatterns = {"/article/*", "/member/*"})
 public class DispatcherServlet extends HttpServlet {
 
     @Override

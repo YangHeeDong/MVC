@@ -7,7 +7,7 @@
 <section>
     <div class="container mt-3 text-center">
 
-        <table class="table table-hover table-bordered">
+        <table style="box-sizing: border-box" class="table table-hover table-bordered">
             <thead class="table-dark">
                 <tr class="row">
                     <th class="col-1" scope="col">Id</th>
@@ -37,6 +37,9 @@
                 </c:forEach>
             </tbody>
         </table>
+        <div class="text-end">
+            <a type="button" href="/article/create" class="btn btn-sm btn-primary">글 등록</a>
+        </div>
     </div>
 </section>
 

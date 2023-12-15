@@ -16,7 +16,7 @@ pageEncoding="utf-8"%>
               <textarea class="form-control" name="body" rows="3"></textarea>
             </div>
             <div class="float-end">
-                <button type="submit" class="btn btn-primary btn-sm px-3">제출</button>
+                <button type="submit" class="btn btn-primary btn-sm px-3">등록</button>
             </div>
         </form>
     </div>

@@ -21,8 +21,7 @@ public class ArticleRepository {
                 .append("SET createDate=now(),")
                 .append("modifiedDate=now(),")
                 .append("title=?,",title)
-                .append("body=?,",body)
-                .append("isBlind=?",isBlind);
+                .append("body=?",body);
 
         return sql.insert();
     }
@@ -31,7 +30,6 @@ public class ArticleRepository {
         SecSql sql = myMap.genSecSql();
         sql
                 .append("SELECT * FROM article")
-                .append("WHERE isBlind=false")
                 .append("ORDER BY id DESC");
 
         return sql.selectRows(Article.class);
@@ -41,7 +39,7 @@ public class ArticleRepository {
         SecSql sql = myMap.genSecSql();
         sql
                 .append("SELECT * FROM article")
-                .append("WHERE id =? and isBlind=false",id);
+                .append("WHERE id =?",id);
 
         return sql.selectRow(Article.class);
     }
@@ -51,7 +49,6 @@ public class ArticleRepository {
         sql
                 .append("SELECT * FROM article")
                 .append("WHERE id < ?", id)
-                .append("and isBlind = false")
                 .append("ORDER BY id DESC")
                 .append("limit 1");
         return sql.selectRow(Article.class);
@@ -62,7 +59,6 @@ public class ArticleRepository {
         sql
                 .append("SELECT * FROM article")
                 .append("WHERE id > ?", id)
-                .append("and isBlind = false")
                 .append("ORDER BY id ASC")
                 .append("limit 1");
         return sql.selectRow(Article.class);

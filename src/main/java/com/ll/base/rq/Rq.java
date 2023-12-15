@@ -6,6 +6,7 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -130,6 +131,21 @@ public class Rq {
 
     public void setAttr(String name,Object value) {
         req.setAttribute(name,value);
+    }
+
+    public void setSessionAttribute(String key, Object value) {
+        HttpSession session = req.getSession();
+        session.setAttribute(key,value);
+    }
+
+    public String getSessionAttributeByKey(String key) {
+        HttpSession session = req.getSession();
+        return session.getAttribute(key).toString();
+    }
+
+    public void sessionReset() {
+        HttpSession session = req.getSession();
+        session.invalidate();
     }
 
     public void replace(String uri, String msg) {
