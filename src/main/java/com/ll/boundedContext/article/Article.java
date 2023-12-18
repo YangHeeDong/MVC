@@ -20,8 +20,9 @@ public class Article {
     private LocalDateTime createDate;
     private LocalDateTime modifiedDate;
 
-    //private String writer;
     private String title;
     private String body;
 
+    private long memberId;
+    private String memberLoginId;
 }

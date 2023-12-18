@@ -11,8 +11,8 @@ public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
-    public long write(String title, String body, boolean isBlind) {
-        return articleRepository.write(title,body,isBlind);
+    public long write(String title, String body, long memberId) {
+        return articleRepository.write(title,body,memberId);
     }
 
     public List<Article> getArticles() {
@@ -29,5 +29,13 @@ public class ArticleService {
 
     public Article getNextArticle(long id) {
         return articleRepository.getNextArticle(id);
+    }
+
+    public void modify(long articleId, String title, String body) {
+        articleRepository.modify(articleId,title,body);
+    }
+
+    public void delete(long id) {
+        articleRepository.delete(id);
     }
 }

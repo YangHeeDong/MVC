@@ -19,6 +19,15 @@ public class MemberController {
         rq.view("/member/create");
     }
 
+    public Member getMemberByLoginedMemberId(Rq rq){
+        long loginedMemeberId = Long.parseLong(rq.getSessionAttributeByKey("loginedMemberId"));
+        if(loginedMemeberId == -1){
+            return null;
+        }
+        return memberService.getMemberById(loginedMemeberId);
+    }
+
+
     @PostMapping("/member/create")
     public void createMember(Rq rq){
 
@@ -96,8 +105,8 @@ public class MemberController {
             rq.historyBack("아이디 또는 비밀번호를 확인하세요");
             return;
         }else{
-            rq.setSessionAttribute("memberId", member.getId());
-            rq.setSessionAttribute("memberLoginId",member.getLoginId());
+            rq.setSessionAttribute("loginedMemberId", member.getId());
+            rq.setSessionAttribute("loginedMemberLoginId", member.getLoginId());
         }
 
         rq.replace("/article/list",member.getLoginId()+"님 환영합니다");

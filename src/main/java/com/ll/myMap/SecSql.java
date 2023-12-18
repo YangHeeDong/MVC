@@ -80,7 +80,7 @@ public class SecSql {
     }
 
     private boolean isInsert() {
-        return getFormat().startsWith("INSERT");
+        return getFormat().startsWith("INSERT") || getFormat().startsWith("UPDATE") || getFormat().startsWith("DELETE");
     }
 
     private String getFormat() {
@@ -142,7 +142,6 @@ public class SecSql {
 
         return id;
     }
-
 
     public <T> List<T> selectRows() {
         return (List<T>) selectRows(Map.class);

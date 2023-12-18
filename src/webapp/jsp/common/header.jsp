@@ -16,8 +16,8 @@ pageEncoding="utf-8"%>
 <body>
 
 <%
-String loginedMemberId = (session.getAttribute("memberId") != null) ? session.getAttribute("memberId").toString() : null;
-String loginedMemberLoginId = (session.getAttribute("memberLoginId") != null) ? session.getAttribute("memberLoginId").toString() : null;
+long loginedMemberId = (long)session.getAttribute("loginedMemberId");
+String loginedMemberLoginId = (loginedMemberId != -1) ? session.getAttribute("loginedMemberLoginId").toString() : null;
 %>
 
 <!-- 네비 시작 -->
@@ -36,10 +36,10 @@ String loginedMemberLoginId = (session.getAttribute("memberLoginId") != null) ? 
             </ul>
             <ul class="navbar-nav mb-lg-0">
                 <c:choose>
-                	<c:when test="${not empty <%=loginedMemberId%>}">
+                	<c:when test="${loginedMemberId != -1}">
                 		<li class="nav-item">
                             <a href="/member/myPage" class="nav-link">
-                                <%=loginedMemberLoginId%>
+                                ${loginedMemberLoginId}
                            </a>
                         </li>
                         <li class="nav-item">

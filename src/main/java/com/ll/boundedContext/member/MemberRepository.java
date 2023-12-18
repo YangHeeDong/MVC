@@ -43,4 +43,12 @@ public class MemberRepository {
 
         return sql.selectRow(Member.class);
     }
+
+    public Member getMemberById(long loginedMemeberId) {
+        SecSql sql = myMap.genSecSql();
+            sql
+                    .append("SELECT * FROM `member`")
+                    .append("WHERE Id = ?",loginedMemeberId);
+        return sql.selectRow(Member.class);
+    }
 }

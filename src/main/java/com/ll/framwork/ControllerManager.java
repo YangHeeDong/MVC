@@ -84,6 +84,16 @@ public class ControllerManager {
             return;
         }
 
+        if(Integer.parseInt(rq.getSessionAttributeByKey("loginedMemberId")) == -1){
+            if(
+                    actionPath.equals("/article/create") ||
+                    actionPath.equals("/article/modify")
+            ){
+                mappingKey = routeMethod+"___/member/login";
+            }
+
+        }
+
         RouteInfo routeInfo = routeInfos.get(mappingKey);
         rq.setRouteInfo(routeInfo);
 
@@ -94,7 +104,7 @@ public class ControllerManager {
         RouteInfo routeInfo = rq.getRouteInfo();
         Class controllerCls = routeInfo.getControllerCls();
         Method actionMethod = routeInfo.getMethod();
-        // 일단 여기서 controllerObj가 null
+
         Object controllerObj = Container.getObj(controllerCls);
 
         try {

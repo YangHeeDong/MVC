@@ -10,14 +10,37 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">${article.title}</h5>
+                <div class="text-end">
+                    <span>${article.memberLoginId}</span>
+                </div>
 
                 <div class="my-3">
                     <p class="card-text">${article.body}</p>
                 </div>
                 <div class="text-end">
-                    <span href="#" class="card-link">${article.createDate}</span>
+                   <div>
+                       <fmt:parseDate value="${article.createDate}" var="createDate" pattern="yyyy-MM-dd'T'HH:mm:SS"/>
+                       <span> 작성일 :
+                           <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd" />
+                       </span>
+                   </div>
+                    <c:if test="${article.createDate != article.modifiedDate}">
+                         <div>
+                               <fmt:parseDate value="${article.modifiedDate}" var="modifiedDate" pattern="yyyy-MM-dd'T'HH:mm:SS"/>
+                               <span> 수정일 :
+                                   <fmt:formatDate value="${modifiedDate}" pattern="yyyy-MM-dd" />
+                               </span>
+                           </div>
+                    </c:if>
                 </div>
             </div>
+        </div>
+
+        <div class="text-end mt-2">
+            <c:if test="${loginedMemberId == article.memberId}">
+                <a type="button" href="/article/modify/${article.id}" class="btn btn-sm btn-success">수정</a>
+                <a type="button" href="/article/delete/${article.id}" class="btn btn-sm btn-danger">삭제</a>
+            </c:if>
         </div>
 
         <div class="card mt-4">

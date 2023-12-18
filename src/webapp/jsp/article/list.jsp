@@ -11,9 +11,10 @@
             <thead class="table-dark">
                 <tr class="row">
                     <th class="col-1" scope="col">Id</th>
-                    <th class="col-7">Title</th>
-                    <th class="col-2">createDate</th>
-                    <th class="col-2">modifiedDate</th>
+                    <th class="col-8">Title</th>
+                    <th class="col-1">Writer</th>
+                    <th class="col-1">createDate</th>
+                    <th class="col-1">modifiedDate</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,14 +23,17 @@
                         <th class="col-1" scope="row">
                             <span>${article.id}</span>
                         </th>
-                        <td class="col-7 text-start">
+                        <td class="col-8 text-start">
                             <a href="/article/detail/${article.id}" class="flex p-2 group">${article.title}<a/>
                         </td>
-                        <td class="col-2">
+                        <td class="col-1">
+                            <span>${article.memberLoginId}</span>
+                        </td>
+                        <td class="col-1">
                             <fmt:parseDate value="${article.createDate}" var="createDate" pattern="yyyy-MM-dd'T'HH:mm:SS"/>
                             <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd" />
                         </td>
-                        <td class="col-2">
+                        <td class="col-1">
                             <fmt:parseDate value="${article.modifiedDate}" var="modifiedDate" pattern="yyyy-MM-dd'T'HH:mm:SS"/>
                             <fmt:formatDate value="${modifiedDate}" pattern="yyyy-MM-dd" />
                         </td>
