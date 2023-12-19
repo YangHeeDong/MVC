@@ -44,11 +44,28 @@ public class MemberRepository {
         return sql.selectRow(Member.class);
     }
 
-    public Member getMemberById(long loginedMemeberId) {
+    public Member getMemberById(long loginedMemberId) {
         SecSql sql = myMap.genSecSql();
             sql
                     .append("SELECT * FROM `member`")
-                    .append("WHERE Id = ?",loginedMemeberId);
+                    .append("WHERE Id = ?",loginedMemberId);
         return sql.selectRow(Member.class);
+    }
+
+    public void delete(long loginedMemberId) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("DELETE FROM `member`")
+                .append("WHERE id = ?",loginedMemberId);
+        sql.insert();
+    }
+
+    public void chagePassword(long loginedMemberId, String newPassword) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("UPDATE `member`")
+                .append("SET `password` = ?",newPassword)
+                .append("WHERE id = ?",loginedMemberId);
+        sql.insert();
     }
 }

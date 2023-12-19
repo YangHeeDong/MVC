@@ -22,11 +22,15 @@ public class ArticleRepository {
                 .append("modifiedDate=now(),")
                 .append("title=?,",title)
                 .append("body=?,",body)
-                .append("memberId=?",memberId);
+                .append("memberId=?,",memberId)
+                .append("hit=0");
+
 
         return sql.insert();
     }
 
+    // category별
+    // 제목/내용, 제목, 내용, 글쓴이 를 나눠야 하는데
     public List<Article> getArticles() {
         SecSql sql = myMap.genSecSql();
         sql
@@ -37,6 +41,7 @@ public class ArticleRepository {
 
         return sql.selectRows(Article.class);
     }
+
 
     public Article getById(long id) {
         SecSql sql = myMap.genSecSql();
@@ -85,6 +90,16 @@ public class ArticleRepository {
         sql
                 .append("DELETE FROM article ")
                 .append("WHERE id = ?",articleId);
+        sql.insert();
+    }
+
+    public void updateHit(long id, int hit) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("UPDATE article")
+                .append("SET hit = ?",hit)
+                .append("where id = ?",id);
+
         sql.insert();
     }
 }

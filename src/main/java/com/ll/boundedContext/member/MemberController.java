@@ -27,7 +27,6 @@ public class MemberController {
         return memberService.getMemberById(loginedMemeberId);
     }
 
-
     @PostMapping("/member/create")
     public void createMember(Rq rq){
 
@@ -118,6 +117,83 @@ public class MemberController {
         rq.replace("/article/list","로그아웃 되었습니다.");
     }
 
+    @GetMapping("/member/myPage")
+    public void showMyPage(Rq rq){
 
+        Member loginedMember = getMemberByLoginedMemberId(rq);
+
+        if(loginedMember == null){
+            rq.replace("/member/login","로그인 후 이용해주세요");
+            return;
+        }
+
+        rq.setAttr("loginedMemberEmail",loginedMember.getEmail());
+
+        rq.view("/member/myPage");
+    }
+
+    @GetMapping("/member/delete")
+    public void delete(Rq rq){
+
+        Member loginedMember = getMemberByLoginedMemberId(rq);
+
+        if(loginedMember == null){
+            rq.replace("/member/login","로그인 후 이용해주세요");
+            return;
+        }
+
+        memberService.delete(loginedMember.getId());
+        
+        rq.replace("/article/list","탈퇴 되었습니다.");
+    }
+
+    @PostMapping("/member/changePassword")
+    public void changePassword(Rq rq){
+
+        Member loginedMember = getMemberByLoginedMemberId(rq);
+
+        if(loginedMember == null){
+            rq.replace("/member/login","로그인 후 이용해주세요");
+            return;
+        }
+
+        String oldPassword = rq.getParam("oldPassword",null);
+        String newPassword = rq.getParam("newPassword",null);
+        String newPasswordConfirm = rq.getParam("newPasswordConfirm",null);
+
+        // 세 데이터중 하나라도 null이 아니라면
+        if(oldPassword != null || newPassword != null || newPasswordConfirm != null){
+            if(oldPassword == null || oldPassword.trim().isEmpty()){
+                rq.historyBack("이전 비밀번호를 입력해줘잉");
+                return;
+            }
+
+            if(newPassword == null || newPassword.trim().isEmpty()){
+                rq.historyBack("새 비밀번호를 입력해줘잉");
+                return;
+            }
+
+            if(newPasswordConfirm == null || newPasswordConfirm.trim().isEmpty()){
+                rq.historyBack("새 비밀번호 확인을 입력해줘잉");
+                return;
+            }
+
+            if(!newPassword.equals(newPasswordConfirm)){
+                rq.historyBack("새 비밀번호와 비밀번호확인이 달라잉");
+                return;
+            }
+
+            if(memberService.login(loginedMember.getLoginId(),oldPassword) == null){
+                rq.historyBack("현재 비밀번호가 일치하지 않습니다.");
+                return;
+            }
+        }
+
+
+
+        memberService.chagePassword(loginedMember.getId(),newPassword);
+        rq.sessionReset();
+        rq.replace("/member/login","비밀번호가 수정 되었습니다.");
+    }
 
 }

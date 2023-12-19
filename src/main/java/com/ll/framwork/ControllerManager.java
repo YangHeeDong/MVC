@@ -87,7 +87,10 @@ public class ControllerManager {
         if(Integer.parseInt(rq.getSessionAttributeByKey("loginedMemberId")) == -1){
             if(
                     actionPath.equals("/article/create") ||
-                    actionPath.equals("/article/modify")
+                    actionPath.equals("/article/modify") ||
+                    actionPath.equals("/reply/create") ||
+                    actionPath.equals("/reply/modify") ||
+                    actionPath.equals("/member/changePassword")
             ){
                 mappingKey = routeMethod+"___/member/login";
             }

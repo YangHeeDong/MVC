@@ -4,6 +4,8 @@ import com.ll.base.rq.Rq;
 import com.ll.boundedContext.member.Member;
 import com.ll.boundedContext.member.MemberController;
 import com.ll.boundedContext.member.MemberService;
+import com.ll.boundedContext.reply.Reply;
+import com.ll.boundedContext.reply.ReplyController;
 import com.ll.framwork.annotataion.Autowired;
 import com.ll.framwork.annotataion.Controller;
 import com.ll.framwork.annotataion.GetMapping;
@@ -21,14 +23,21 @@ public class ArticleController {
     @Autowired
     private MemberController memberController;
 
-    @GetMapping("/article/list")
+    @Autowired
+    private ReplyController replyController;
+
+    @GetMapping("/article/list/{category}/{keyword}")
     public void showList(Rq rq){
-        List<Article> articleList = articleService.getArticles();
+        //int currentPageNum = Integer.parseInt(rq.getParam("pageNum","0"));
+
+        String category = rq.getParam("category",null);
+        String keyword = rq.getParam("keyword",null);
+
+        List<Article> articleList = articleService.getArticles(category,keyword);
 
         rq.setAttr("articles",articleList);
         rq.view("article/list");
     }
-
 
     @GetMapping("/article/create")
     public void createArticleFrom(Rq rq){
@@ -69,7 +78,7 @@ public class ArticleController {
         long id = rq.getLongParam("id",0);
 
         if(id == 0){
-            rq.historyBack("번호를 입력해 주세요");
+            rq.historyBack("게시글 번호가 없습니다.");
             return;
         }
 
@@ -80,12 +89,19 @@ public class ArticleController {
             return;
         }
 
+        article.setHit(article.getHit() + 1);
+
+        articleService.updateHit(article.getId(),article.getHit());
+
         Article preArticle = articleService.getPreArticle(article.getId());
         Article nextArticle = articleService.getNextArticle(article.getId());
+
+        List<Reply> replies = replyController.getRepliesByArticleId(article.getId());
 
         rq.setAttr("prevArticle", preArticle);
         rq.setAttr("nextArticle", nextArticle);
         rq.setAttr("article",article);
+        rq.setAttr("replies",replies);
 
         rq.view("article/detail");
     }
@@ -101,7 +117,7 @@ public class ArticleController {
         long id = rq.getLongParam("id",0);
 
         if(id == 0){
-            rq.historyBack("번호를 입력해 주세요");
+            rq.historyBack("게시글 번호가 없습니다.");
             return;
         }
 
@@ -134,7 +150,7 @@ public class ArticleController {
         long id = rq.getLongParam("id",0);
 
         if(id == 0){
-            rq.historyBack("잘못된 접근 입니다.");
+            rq.historyBack("게시글 번호가 없습니다.");
             return;
         }
 
@@ -181,7 +197,7 @@ public class ArticleController {
         long id = rq.getLongParam("id",0);
 
         if(id == 0){
-            rq.historyBack("잘못된 접근 입니다.");
+            rq.historyBack("게시글 번호가 없습니다.");
             return;
         }
 

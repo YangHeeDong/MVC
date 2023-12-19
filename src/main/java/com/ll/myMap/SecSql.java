@@ -19,9 +19,9 @@ public class SecSql {
     private List<Object> bindingDatum;
     private ConnectionPool connectionPool;
 
-    // 얘의 역할이 뭐여
+    // DB에서 가져온 결과를 Key Value를 통해 나의 객체에 맞게 매핑을 해준다
     private static ObjectMapper om;
-    // 현재까지는 애 안쓰는디
+
     static {
         om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());

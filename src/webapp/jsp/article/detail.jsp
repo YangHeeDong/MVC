@@ -18,20 +18,24 @@
                     <p class="card-text">${article.body}</p>
                 </div>
                 <div class="text-end">
-                   <div>
-                       <fmt:parseDate value="${article.createDate}" var="createDate" pattern="yyyy-MM-dd'T'HH:mm:SS"/>
+                    <div>
+                        조회수 : ${article.hit}
+                    </div>
+                    <fmt:parseDate value="${article.modifiedDate}" var="modifiedDate" pattern="yyyy-MM-dd"/>
+                    <fmt:parseDate value="${article.createDate}" var="createDate" pattern="yyyy-MM-dd"/>
+                    <div>
                        <span> 작성일 :
                            <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd" />
                        </span>
-                   </div>
-                    <c:if test="${article.createDate != article.modifiedDate}">
+                    </div>
+                    <c:if test="${createDate != modifiedDate}">
                          <div>
-                               <fmt:parseDate value="${article.modifiedDate}" var="modifiedDate" pattern="yyyy-MM-dd'T'HH:mm:SS"/>
                                <span> 수정일 :
                                    <fmt:formatDate value="${modifiedDate}" pattern="yyyy-MM-dd" />
                                </span>
                            </div>
                     </c:if>
+
                 </div>
             </div>
         </div>
@@ -43,7 +47,7 @@
             </c:if>
         </div>
 
-        <div class="card mt-4">
+        <div class="card mt-3">
             <ul class="list-group list-group-flush">
                 <c:if test="${not empty nextArticle}">
                     <a href="/article/detail/${nextArticle.id}" class="list-group-item">
@@ -73,16 +77,53 @@
         </div>
 
         <div class="mt-4">
-          댓글
+                  댓글
         </div>
-        <div class="mt-2 row">
-            <div>
-                <textarea type="text" class="form-control" name="title" placeholder="제목을 입력하세요"></textarea>
+        <c:if test="${loginedMemberId != -1}">
+            <div class="mt-2 row">
+                <form action="/reply/create/${article.id}" method="post">
+                    <div>
+                        <textarea type="text" class="form-control" name="body" placeholder="댓글을 입력해주세요!"></textarea>
+                    </div>
+                    <div class="text-end mt-2">
+                        <button type="submit" class="btn btn-primary btn-sm px-3">등록</button>
+                    </div>
+                </form>
             </div>
-            <div class="text-end mt-2">
-                <a type="button" href="/article/create" class="btn btn-sm btn-primary">댓글 등록</a>
+        </c:if>
+
+        <c:forEach items="${replies}" var="reply">
+            <div class="card my-1">
+                <div class="card-body">
+                    <div>
+                        <p class="card-text">${reply.memberLoginId} : ${reply.body}</p>
+                    </div>
+
+                    <div class="text-end">
+                        <fmt:parseDate value="${reply.modifiedDate}" var="modifiedDate" pattern="yyyy-MM-dd"/>
+                        <fmt:parseDate value="${reply.createDate}" var="createDate" pattern="yyyy-MM-dd"/>
+                        <div>
+                           <span> 작성일 :
+                               <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd" />
+                           </span>
+                        </div>
+                        <c:if test="${createDate != modifiedDate}">
+                             <div>
+                                   <span> 수정일 :
+                                       <fmt:formatDate value="${modifiedDate}" pattern="yyyy-MM-dd" />
+                                   </span>
+                               </div>
+                        </c:if>
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="text-end mt-1">
+                <c:if test="${loginedMemberId == reply.memberId}">
+                    <a type="button" href="/reply/modify/${reply.id}" class="btn btn-sm btn-success">수정</a>
+                    <a type="button" href="/reply/delete/${reply.id}" class="btn btn-sm btn-danger">삭제</a>
+                </c:if>
+            </div>
+        </c:forEach>
 
     </div>
 </section>

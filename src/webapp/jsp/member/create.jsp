@@ -8,7 +8,7 @@ pageEncoding="utf-8"%>
     <div class="container mt-3">
         <form action="/member/create" method="post">
             <div class="mb-3">
-                <label class="form-label">Login ID</label>
+                <label class="form-label">Login Id</label>
                 <input type="text" class="form-control" name="loginId" placeholder="아이디를 입력하세요">
             </div>
             <div class="mb-3">

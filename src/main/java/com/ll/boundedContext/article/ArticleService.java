@@ -12,11 +12,13 @@ public class ArticleService {
     private ArticleRepository articleRepository;
 
     public long write(String title, String body, long memberId) {
+
         return articleRepository.write(title,body,memberId);
     }
 
-    public List<Article> getArticles() {
-        return articleRepository.getArticles();
+    public List<Article> getArticles(String category,String keyword) {
+        //if(current)
+        return articleRepository.getArticles(category, keyword);
     }
 
     public Article getById(long id) {
@@ -37,5 +39,10 @@ public class ArticleService {
 
     public void delete(long id) {
         articleRepository.delete(id);
+    }
+
+
+    public void updateHit(long id, int hit) {
+        articleRepository.updateHit(id,hit);
     }
 }

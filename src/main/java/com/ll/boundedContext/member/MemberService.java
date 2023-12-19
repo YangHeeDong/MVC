@@ -66,4 +66,13 @@ public class MemberService {
     public Member getMemberById(long id) {
         return memberRepository.getMemberById(id);
     }
+
+    public void delete(long loginedMemberId) {
+        memberRepository.delete(loginedMemberId);
+    }
+
+    public void chagePassword(long loginedMemberId, String newPassword) {
+        newPassword = encrypt(newPassword);
+        memberRepository.chagePassword(loginedMemberId,newPassword);
+    }
 }

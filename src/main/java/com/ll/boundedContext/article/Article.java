@@ -24,5 +24,7 @@ public class Article {
     private String body;
 
     private long memberId;
+    private int hit;
+
     private String memberLoginId;
 }
