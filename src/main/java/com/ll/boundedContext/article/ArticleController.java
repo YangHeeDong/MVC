@@ -30,10 +30,15 @@ public class ArticleController {
     public void showList(Rq rq){
         //int currentPageNum = Integer.parseInt(rq.getParam("pageNum","0"));
 
-        String category = rq.getParam("category",null);
-        String keyword = rq.getParam("keyword",null);
+        long currentPage = 4;
+        String category = rq.getParam("category","");
+        String keyword = rq.getParam("keyword","");
 
-        List<Article> articleList = articleService.getArticles(category,keyword);
+        long totalArticleCounts = articleService.getArticleCounts(category,keyword);
+        long totalPageCounts = (long)Math.ceil(totalArticleCounts/(double)10);
+        long startArticleCount = ((currentPage-1) * 10)+1;
+        long endArticleCount = currentPage * 10;
+        List<Article> articleList = articleService.getArticles(category,keyword,startArticleCount,endArticleCount);
 
         rq.setAttr("articles",articleList);
         rq.view("article/list");

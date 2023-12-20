@@ -31,7 +31,7 @@ public class ArticleRepository {
 
     // category별
     // 제목/내용, 제목, 내용, 글쓴이 를 나눠야 하는데
-    public List<Article> getArticles() {
+    public List<Article> getArticles(String category,String keyword,long startArticleCount,long endArticleCount) {
         SecSql sql = myMap.genSecSql();
         sql
                 .append("SELECT A.*, M.loginId AS memberLoginId  FROM article AS A")
@@ -101,5 +101,29 @@ public class ArticleRepository {
                 .append("where id = ?",id);
 
         sql.insert();
+    }
+
+    public ArticleCounts getArticleCounts(String category, String keyword) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT Count(*) as counts FROM article as a")
+                .append("left join `member` as m")
+                .append("on A.memberId = m.id")
+                .append("where ? = ?",category,"%"+keyword+"%");
+
+        return sql.selectRow(ArticleCounts.class);
+    }
+
+    public ArticleCounts getArticleCountsByTotal(String keyword) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT Count(*) as counts FROM article as a")
+                .append("left join `member` as m")
+                .append("on A.memberId = m.id")
+                .append("WHERE title like ? OR ","%"+keyword+"%")
+                .append("body like ? OR ","%"+keyword+"%")
+                .append("loginId like ?","%"+keyword+"%");
+
+        return sql.selectRow(ArticleCounts.class);
     }
 }

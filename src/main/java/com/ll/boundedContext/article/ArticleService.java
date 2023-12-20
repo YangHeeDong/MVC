@@ -5,6 +5,7 @@ import com.ll.framwork.annotataion.Service;
 
 import java.util.List;
 
+
 @Service
 public class ArticleService {
 
@@ -13,12 +14,21 @@ public class ArticleService {
 
     public long write(String title, String body, long memberId) {
 
+//        int i = 1;
+//        while(i < 100){
+//            articleRepository.write(title+i ,body+i,memberId);
+//            i = i + 1;
+//        }
+
         return articleRepository.write(title,body,memberId);
     }
 
-    public List<Article> getArticles(String category,String keyword) {
-        //if(current)
-        return articleRepository.getArticles(category, keyword);
+    public List<Article> getArticles(String category,String keyword,long startArticleCount,long endArticleCount) {
+        if(category.isEmpty() || category.equals("total")){
+            return articleRepository.getTotalArticles(startArticleCount,endArticleCount);
+        }else{
+            return articleRepository.getArticles(category,keyword,startArticleCount,endArticleCount);
+        }
     }
 
     public Article getById(long id) {
@@ -44,5 +54,13 @@ public class ArticleService {
 
     public void updateHit(long id, int hit) {
         articleRepository.updateHit(id,hit);
+    }
+
+    public long getArticleCounts(String category, String keyword) {
+        if(category.isEmpty() || category.equals("total")){
+            return articleRepository.getArticleCountsByTotal(keyword).getCounts();
+        }else{
+            return articleRepository.getArticleCounts(category,keyword).getCounts();
+        }
     }
 }

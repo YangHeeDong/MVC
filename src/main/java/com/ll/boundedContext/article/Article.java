@@ -16,14 +16,13 @@ import java.time.LocalDateTime;
 // @RequiredArgsConstructor final, notnull로 선언된 변수를 생성자
 public class Article {
     private long id;
+    private long memberId;
 
     private LocalDateTime createDate;
     private LocalDateTime modifiedDate;
 
     private String title;
     private String body;
-
-    private long memberId;
     private int hit;
 
     private String memberLoginId;

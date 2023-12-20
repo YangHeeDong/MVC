@@ -18,17 +18,17 @@
         <div class="my-2 d-flex  justify-content-end">
             <div class="col-2 mx-1">
                 <select class="form-select" id="category" aria-label="Default select example">
-                  <option value="titleAndBody" selected>제목/내용</option>
+                  <option value="total" selected>전체</option>
                   <option value="title">제목</option>
                   <option value="body">내용</option>
                   <option value="writer">글쓴이</option>
                 </select>
             </div>
-            <div class="col-2">
+            <div class="col-2 mx-1">
                 <input class="form-control" id="keyword" type="text"/>
             </div>
-            <div class="col-1 mx-1">
-                <a type="button" href="javascript:void(0);" onclick="searchFunction();" class="btn btn-primary">검색</a>
+            <div class="col-1">
+                <a type="button" href="javascript:void(0);" onclick="searchFunction();" class="btn btn-primary w-100">검색</a>
             </div>
         </div>
 
