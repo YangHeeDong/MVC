@@ -29,20 +29,6 @@ public class ArticleRepository {
         return sql.insert();
     }
 
-    // category별
-    // 제목/내용, 제목, 내용, 글쓴이 를 나눠야 하는데
-    public List<Article> getArticles(String category,String keyword,long startArticleCount,long endArticleCount) {
-        SecSql sql = myMap.genSecSql();
-        sql
-                .append("SELECT A.*, M.loginId AS memberLoginId  FROM article AS A")
-                .append("LEFT JOIN `member` AS M")
-                .append("ON A.memberId  = M.id")
-                .append("ORDER BY A.id DESC");
-
-        return sql.selectRows(Article.class);
-    }
-
-
     public Article getById(long id) {
         SecSql sql = myMap.genSecSql();
         sql
@@ -103,17 +89,6 @@ public class ArticleRepository {
         sql.insert();
     }
 
-    public ArticleCounts getArticleCounts(String category, String keyword) {
-        SecSql sql = myMap.genSecSql();
-        sql
-                .append("SELECT Count(*) as counts FROM article as a")
-                .append("left join `member` as m")
-                .append("on A.memberId = m.id")
-                .append("where ? = ?",category,"%"+keyword+"%");
-
-        return sql.selectRow(ArticleCounts.class);
-    }
-
     public ArticleCounts getArticleCountsByTotal(String keyword) {
         SecSql sql = myMap.genSecSql();
         sql
@@ -126,4 +101,20 @@ public class ArticleRepository {
 
         return sql.selectRow(ArticleCounts.class);
     }
+
+    public List<Article> getTotalArticles(String keyword,long startArticleCount) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT A.*, M.loginId AS memberLoginId  FROM article AS A")
+                .append("LEFT JOIN `member` AS M")
+                .append("ON A.memberId  = M.id")
+                .append("WHERE title like ? OR ","%"+keyword+"%")
+                .append("body like ? OR ","%"+keyword+"%")
+                .append("loginId like ?","%"+keyword+"%")
+                .append("ORDER BY A.id DESC")
+                .append("limit ?,10",startArticleCount);
+
+        return sql.selectRows(Article.class);
+    }
+
 }

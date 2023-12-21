@@ -6,10 +6,74 @@
 
 <script>
     function searchFunction(obj) {
-        var category =  $('#category').val();
-        var keyword = $('#keyword').val();
-        location.href = "/article/list/"+category+"/"+keyword;
+        var keyword = encodeURI($('#keyword').val(),"UTF-8");
+        location.href = "/article/list/1/"+keyword;
     }
+
+    $(document).ready(function(){
+
+        var totalPageNum = ${totalPageCounts};
+        var currentPageNum = ${currentPage};
+
+        var code= "";
+
+        if(totalPageNum <= 5){
+            for( var i = 1 ; i <= totalPageNum ; i++){
+                        if(i == currentPageNum){
+                            code = code + '<li class="page-item"><a class="page-link active" pageNum='+i+' href="javascript:void(0)">'+i+'</a></li>'
+                        }else{
+                            code = code + '<li class="page-item"><a class="page-link" pageNum='+i+' href="javascript:void(0)">'+i+'</a></li>'
+                        }
+                    }
+        }else if(currentPageNum <= 2){
+            for( var i = 1 ; i <= 5 ; i++){
+                if(i == currentPageNum){
+                    code = code + '<li class="page-item"><a class="page-link active" pageNum='+i+' href="javascript:void(0)">'+i+'</a></li>'
+                }else{
+                    code = code + '<li class="page-item"><a class="page-link" pageNum='+i+' href="javascript:void(0)">'+i+'</a></li>'
+                }
+            }
+
+            code = code + '<li class="page-item"><a class="page-link" pageNum='+(currentPageNum+1)+' href="#">Next</a></li>'
+
+        }else if(totalPageNum - currentPageNum <= 1){
+
+            code = code + '<li class="page-item"><a class="page-link" pageNum='+(currentPageNum-1)+' href="#">Previous</a></li>'
+
+            for( var i = totalPageNum-5 ; i <= totalPageNum ; i++){
+
+                if(i == currentPageNum){
+                    code = code + '<li class="page-item"><a class="page-link active" pageNum='+i+' href="javascript:void(0)">'+i+'</a></li>'
+                }else{
+                    code = code + '<li class="page-item"><a class="page-link" pageNum='+i+' href="javascript:void(0)">'+i+'</a></li>'
+                }
+            }
+        }else{
+            code = code + '<li class="page-item"><a class="page-link" pageNum='+(currentPageNum-1)+' href="#">Previous</a></li>'
+
+            for( var i = currentPageNum-2 ; i <= currentPageNum+2 ; i++){
+                if(i == currentPageNum){
+                    code = code + '<li class="page-item"><a class="page-link active" pageNum='+i+' href="javascript:void(0)">'+i+'</a></li>'
+                }else{
+                    code = code + '<li class="page-item"><a class="page-link" pageNum='+i+' href="javascript:void(0)">'+i+'</a></li>'
+                }
+            }
+
+            code = code + '<li class="page-item"><a class="page-link" pageNum='+(currentPageNum+1)+' href="#">Next</a></li>'
+        }
+
+        $('.pagination').append(code);
+
+        $('.page-link').on("click",function(){
+              var keyword = $('#keyword').val();
+              var page = $(this).attr('pageNum');
+
+              location.href = "/article/list/"+page+"/"+keyword;
+
+        })
+    });
+
+
 
 </script>
 
@@ -17,15 +81,7 @@
     <div class="container mt-3 text-center">
         <div class="my-2 d-flex  justify-content-end">
             <div class="col-2 mx-1">
-                <select class="form-select" id="category" aria-label="Default select example">
-                  <option value="total" selected>전체</option>
-                  <option value="title">제목</option>
-                  <option value="body">내용</option>
-                  <option value="writer">글쓴이</option>
-                </select>
-            </div>
-            <div class="col-2 mx-1">
-                <input class="form-control" id="keyword" type="text"/>
+                <input class="form-control" id="keyword" type="text" value="${keyword}"/>
             </div>
             <div class="col-1">
                 <a type="button" href="javascript:void(0);" onclick="searchFunction();" class="btn btn-primary w-100">검색</a>
@@ -68,6 +124,14 @@
         <div class="text-end">
             <a type="button" href="/article/create" class="btn btn-sm btn-primary">글 등록</a>
         </div>
+        <div class="d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+
+              </ul>
+            </nav>
+        </div>
+
     </div>
 </section>
 

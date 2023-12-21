@@ -11,6 +11,7 @@ import com.ll.framwork.annotataion.Controller;
 import com.ll.framwork.annotataion.GetMapping;
 import com.ll.framwork.annotataion.PostMapping;
 
+import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,21 +27,26 @@ public class ArticleController {
     @Autowired
     private ReplyController replyController;
 
-    @GetMapping("/article/list/{category}/{keyword}")
+    @GetMapping("/article/list/{page}/{keyword}")
     public void showList(Rq rq){
-        //int currentPageNum = Integer.parseInt(rq.getParam("pageNum","0"));
 
-        long currentPage = 4;
-        String category = rq.getParam("category","");
+        long currentPage = Long.parseLong(rq.getParam("page","1"));
+
         String keyword = rq.getParam("keyword","");
+        keyword = URLDecoder.decode(keyword);
 
-        long totalArticleCounts = articleService.getArticleCounts(category,keyword);
+        long totalArticleCounts = articleService.getArticleCounts(keyword);
         long totalPageCounts = (long)Math.ceil(totalArticleCounts/(double)10);
-        long startArticleCount = ((currentPage-1) * 10)+1;
+        long startArticleCount = ((currentPage-1) * 10);
         long endArticleCount = currentPage * 10;
-        List<Article> articleList = articleService.getArticles(category,keyword,startArticleCount,endArticleCount);
+        List<Article> articleList = articleService.getArticles(keyword,startArticleCount);
 
         rq.setAttr("articles",articleList);
+        rq.setAttr("currentPage",currentPage);
+        rq.setAttr("totalPageCounts",totalPageCounts);
+        rq.setAttr("keyword",keyword);
+
+
         rq.view("article/list");
     }
 

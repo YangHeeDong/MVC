@@ -23,12 +23,12 @@ public class ArticleService {
         return articleRepository.write(title,body,memberId);
     }
 
-    public List<Article> getArticles(String category,String keyword,long startArticleCount,long endArticleCount) {
-        if(category.isEmpty() || category.equals("total")){
-            return articleRepository.getTotalArticles(startArticleCount,endArticleCount);
-        }else{
-            return articleRepository.getArticles(category,keyword,startArticleCount,endArticleCount);
+    public List<Article> getArticles(String keyword,long startArticleCount) {
+        if(startArticleCount == 1){
+            startArticleCount = 0;
         }
+
+        return articleRepository.getTotalArticles(keyword,startArticleCount);
     }
 
     public Article getById(long id) {
@@ -56,11 +56,7 @@ public class ArticleService {
         articleRepository.updateHit(id,hit);
     }
 
-    public long getArticleCounts(String category, String keyword) {
-        if(category.isEmpty() || category.equals("total")){
-            return articleRepository.getArticleCountsByTotal(keyword).getCounts();
-        }else{
-            return articleRepository.getArticleCounts(category,keyword).getCounts();
-        }
+    public long getArticleCounts( String keyword) {
+        return articleRepository.getArticleCountsByTotal(keyword).getCounts();
     }
 }
