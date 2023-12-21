@@ -12,7 +12,7 @@ IoC와 DI의 개념을 공부하고 이해 해보자
 
 ## ☁️ ERD
 
-![초급프로젝트_ERD]([사진url](https://i.imgur.com/NuLQFMU.png))
+![초급프로젝트_ERD](https://i.imgur.com/NuLQFMU.png)
 
 <br>
 <br>
