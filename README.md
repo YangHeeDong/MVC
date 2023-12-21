@@ -26,7 +26,7 @@ IoC와 DI의 개념을 공부하고 이해 해보자
 
 ### 🚨 Issue 1
 ### 🚧 이슈 제목
-Interceptor를 구현해야 하나 말아야 하나.<br /><br />
+filter를 사용해야 하나 말아야 하나.<br /><br />
 
 A. 이슈 내역 <br />
 글 작성,수정, 삭제 등 로그인이 필요한 서비스는 로그인 확인이 필요해 <br /><br />
@@ -39,7 +39,7 @@ A. 이슈 내역 <br />
 - Rq는 Controller Manager에서 사용중
 
 ## 🚥 해결
-- 굳이 Interceptor를 사용하지 않고 ControllerManager에서 URL 분석시 로그인이 필요하면 해당 요청을 Login 요청으로 바꿔 Controller로 보냄
+- 굳이 filter를 사용하지 않고 ControllerManager에서 URL 분석시 로그인이 필요하면 해당 요청을 Login 요청으로 바꿔 Controller로 보냄
 - 왜? ControllerManager에서 사용하는 Rq 객체가 모든 HttpServlet 관련 관리를 하고 있어, 유지보수를 편하게 하기 위함.
 <br><br>
 
