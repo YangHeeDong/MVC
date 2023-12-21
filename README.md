@@ -41,12 +41,12 @@ Dispatucre servlet에서 요청을 캡쳐하여 ControllerManager에서 URL 분�
 
 ## 🚥 해결
 - ...
-
+<br><br>
 ### 🚨 Issue 2
 ### 🚧 현재 구현된 Object Mapper 사용시 유의할 점
 DB에서 데이터를 가져와 DTO에 매핑하기 위해서 objectMapper를 사용할때의 에러
 <br>
-
+<br>
 ## 🛑 원인 <br>
 - Object Mapper에서 DTO에 DB 데이터를 매핑할 때 DTO class에 @AllArgsConstructor를 붙히면 에러가 남.
 - @AllArgsConstructor는 선언된 모든 변수를 파라미터로 가지는 생성자임.
